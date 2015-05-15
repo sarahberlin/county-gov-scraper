@@ -1,10 +1,10 @@
-official.name,office.name,electoral.district,address,phone,website,email,facebook,twitter
-Greg Cox,County Supervisor District 1,San Diego County Council District 1,,(619) 531-5430,http://www.gregcox.com/,,,
-Dianne Jacob,County Supervisor District 2,San Diego County Council District 2,,(619) 531-5430,http://www.diannejacob.com/,,,
-Dave Roberts,County Supervisor District 3,San Diego County Council District 3,,(619) 531-5430,http://www.supervisordaveroberts.com/,,,
-Ron Roberts,County Supervisor District 4,San Diego County Council District 4,,(619) 531-5430,http://www.ronroberts.com/,,,
-Bill Horn,County Supervisor District 5,San Diego County Council District 5,,(619) 531-5430,http://billhorn.com/,,,
-"Ernest J. Dronenburg, Jr.",Assessor,San Diego County,,,https://arcc.sdcounty.ca.gov/Pages/default.aspx,,,
-Bonnie M. Dumanis,District Attorney,San Diego County,,,http://www.sdcda.org/,,,
-Bill Gore,Sheriff,San Diego County,,,http://www.sdsheriff.net/,,,
-Dan Mcallister,Treasurer,San Diego County,,,http://www.sdtreastax.com/,,,
+official.name,electoral.district,office.name,phone,website
+Greg Cox,San Diego County Council District 1,San Diego County Supervisor District 1,(619) 531-5430,http://www.gregcox.com/
+Dianne Jacob,San Diego County Council District 2,San Diego County Supervisor District 2,(619) 531-5430,http://www.diannejacob.com/
+Dave Roberts,San Diego County Council District 3,San Diego County Supervisor District 3,(619) 531-5430,http://www.supervisordaveroberts.com/
+Ron Roberts,San Diego County Council District 4,San Diego County Supervisor District 4,(619) 531-5430,http://www.ronroberts.com/
+Bill Horn,San Diego County Council District 5,San Diego County Supervisor District 5,(619) 531-5430,http://billhorn.com/
+"Ernest J. Dronenburg, Jr.",San Diego County,Assessor,,https://arcc.sdcounty.ca.gov/Pages/default.aspx
+Bonnie M. Dumanis,San Diego County,District Attorney,,http://www.sdcda.org/
+Bill Gore,San Diego County,Sheriff,,http://www.sdsheriff.net/
+Dan Mcallister,San Diego County,Treasurer,,http://www.sdtreastax.com/
