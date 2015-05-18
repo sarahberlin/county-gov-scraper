@@ -19,7 +19,7 @@ def checkURL(x):
     return code
 #titles + names
 def get_govt_data():
-	if checkURL(root_url) == 404:
+	if checkURL(index_url) == 404:
 		print '404 error. Check the url for {0}'.format(index_url)
 	else:
 		soup = bs4.BeautifulSoup((requests.get(index_url)).text)

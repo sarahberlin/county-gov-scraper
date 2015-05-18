@@ -1,16 +1,16 @@
-official.name,office.name,electoral.district,address,phone,website,email,facebook,twitter
-Paul Petersen,Assessor,Maricopa County,,,http://mcassessor.maricopa.gov/the-assessor/biography/,,,
-Fran McCarroll,Clerk of the Board,Maricopa County,,,https://www.maricopa.gov/clk_board/default.aspx,,,
-Michael Jeanes,Clerk of the Court,Maricopa County,,,http://clerkofcourt.maricopa.gov/clkbio.asp,,,
-Bill Montgomery,County Attorney,Maricopa County,,,http://www.maricopacountyattorney.org,,,
-Tom Manos,County Manager,Maricopa County,,,https://www.maricopa.gov/cao/,,,
-Sandi Wilson,Deputy County Manager,Maricopa County,,,https://www.maricopa.gov/dcm/,,,
-Denny Barney,County Supervisor District 1,Maricopa County Council District 1,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-1776,https://www.maricopa.gov/dist1/default.aspx,barneyd@mail.maricopa.gov,,
-Steve Chucri,County Supervisor District 2,Maricopa County Council District 2,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7431,https://www.maricopa.gov/dist2/,chucris@mail.maricopa.gov,,
-Andy Kunasek,County Supervisor District 3,Maricopa County Council District 3,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7562,https://www.maricopa.gov/dist3/,akunasek@mail.maricopa.gov,,
-Clint L. Hickman,County Supervisor District 4,Maricopa County Council District 4,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7642,https://www.maricopa.gov/dist4/,chickman@mail.maricopa.gov,,
-Steve Gallardo,County Supervisor District 5,Maricopa County Council District 5,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7092,https://www.maricopa.gov/dist5/default.aspx,arzagawilliamsc@mail.maricopa.gov,,
-Helen Purcell,Recorder,Maricopa County,,,http://recorder.maricopa.gov/recorder.aspx,,,
-Dr. Don Covey,School Superintendent,Maricopa County,,,http://education.maricopa.gov/site/default.aspx?PageID=216,,,
-Joe Arpaio,Sheriff,Maricopa County,,,http://www.mcso.org/About/Sheriff.aspx,,,
-Charles 'Hos' Hoskins,Treasurer,Maricopa County,,,https://treasurer.maricopa.gov/Pages/LoadPage?page=Bio,,,
+official.name,office.name,electoral.district,address,phone,website,email
+Paul Petersen,Assessor,Maricopa County,,,http://mcassessor.maricopa.gov/the-assessor/biography/,
+Fran McCarroll,Clerk of the Board,Maricopa County,,,https://www.maricopa.gov/clk_board/default.aspx,
+Michael Jeanes,Clerk of the Court,Maricopa County,,,http://clerkofcourt.maricopa.gov/clkbio.asp,
+Bill Montgomery,County Attorney,Maricopa County,,,http://www.maricopacountyattorney.org,
+Tom Manos,County Manager,Maricopa County,,,https://www.maricopa.gov/cao/,
+Sandi Wilson,Deputy County Manager,Maricopa County,,,https://www.maricopa.gov/dcm/,
+Denny Barney,County Supervisor District 1,Maricopa County Council District 1,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-1776,https://www.maricopa.gov/dist1/default.aspx,barneyd@mail.maricopa.gov
+Steve Chucri,County Supervisor District 2,Maricopa County Council District 2,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7431,https://www.maricopa.gov/dist2/,chucris@mail.maricopa.gov
+Andy Kunasek,County Supervisor District 3,Maricopa County Council District 3,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7562,https://www.maricopa.gov/dist3/,akunasek@mail.maricopa.gov
+Clint L. Hickman,County Supervisor District 4,Maricopa County Council District 4,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7642,https://www.maricopa.gov/dist4/,chickman@mail.maricopa.gov
+Steve Gallardo,County Supervisor District 5,Maricopa County Council District 5,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7092,https://www.maricopa.gov/dist5/default.aspx,arzagawilliamsc@mail.maricopa.gov
+Helen Purcell,Recorder,Maricopa County,,,http://recorder.maricopa.gov/recorder.aspx,
+Dr. Don Covey,School Superintendent,Maricopa County,,,http://education.maricopa.gov/site/default.aspx?PageID=216,
+Joe Arpaio,Sheriff,Maricopa County,,,http://www.mcso.org/About/Sheriff.aspx,
+Charles 'Hos' Hoskins,Treasurer,Maricopa County,,,https://treasurer.maricopa.gov/Pages/LoadPage?page=Bio,
