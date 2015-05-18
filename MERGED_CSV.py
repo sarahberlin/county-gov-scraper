@@ -6,7 +6,7 @@ from csv import DictWriter
 from csv import DictReader
 import os
 
-path = '/users/sarahberlin/Desktop/PYTHON/Scraping/County'
+path = ###whatever path is
 os.listdir(path)
 
 #run all of the python files in this directory so that the csv's are up to date
