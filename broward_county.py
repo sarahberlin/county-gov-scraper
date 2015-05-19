@@ -97,8 +97,11 @@ def get_govt_data():
 
 get_govt_data()
 
+for dictionary in dictList:
+    dictionary['state'] = 'FL'
+
 #creates csv
-fieldnames = ['official.name', 'office.name','electoral.district','address','phone','website', 'email', 'facebook', 'twitter']
+fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
 broward_county_board_file = open('broward_county_board.csv','wb')
 csvwriter = csv.DictWriter(broward_county_board_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

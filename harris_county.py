@@ -46,9 +46,11 @@ def get_data():
 
 get_data()
 
+for dictionary in dictList:
+    dictionary['state'] = 'TX'
 
 #creates csv
-fieldnames = ['official.name', 'office.name','electoral.district','address','phone','website', 'email', 'facebook', 'twitter']
+fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
 harris_county_officials_file = open('harris_county_officials.csv','wb')
 csvwriter = csv.DictWriter(harris_county_officials_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

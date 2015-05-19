@@ -33,7 +33,7 @@ def kings_county():
 kings_county()
 
 #scrapes the page of queens county DA
-def queens_countu():
+def queens_county():
 	queens_da_url = 'http://www.queensda.org/dabiography.html'
 	if checkURL(queens_da_url) == 404:
 		print '404 error. Check the url for {0}'.format(queens_da_url)
@@ -48,20 +48,41 @@ def queens_countu():
 	return dictList
 
 
-queens_countu()
+queens_county()
 
+
+#scrapes the page of New York county DA
+def ny_county():
+	ny_da_url = 'http://manhattanda.org/'
+	if checkURL(ny_da_url) == 404:
+		print '404 error. Check the url for {0}'.format(ny_da_url)
+	else:
+		soup = bs4.BeautifulSoup((requests.get(ny_da_url)).text)
+		newDict = {}
+		newDict['office.name'] = "Distict Attorney"
+		newDict['electoral.district'] = "Manhattan"
+		newDict['official.name']= soup.select('p.header_block_data')[0].get_text().encode('utf-8').replace('Meet ', '').replace(', Your District Attorney', '').replace('"', '')
+		newDict['website'] = ny_da_url
+		dictList.append(newDict)
+	return dictList
+
+ny_county()
+
+
+for dictionary in dictList:
+    dictionary['state'] = 'NY'
 
 #creates csv
-fieldnames = ['official.name', 'office.name','electoral.district','address','phone','website', 'email', 'facebook', 'twitter']
-kings_and_queens_county_board_file = open('kings_and_queens_county_board.csv','wb')
-csvwriter = csv.DictWriter(kings_and_queens_county_board_file, delimiter=',', fieldnames=fieldnames)
+fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
+nyc_counties_file = open('nyc_counties.csv','wb')
+csvwriter = csv.DictWriter(nyc_counties_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))
 for row in dictList:
     csvwriter.writerow(row)
 
-kings_and_queens_county_board_file.close()
+nyc_counties_file.close()
  
-with open("kings_and_queens_county_board.csv", "r") as kings_and_queens_county_board_csv:
-     kings_and_queens_county_board = kings_and_queens_county_board_csv.read()
+with open("nyc_counties.csv", "r") as nyc_counties_csv:
+     nyc_counties = nyc_counties_csv.read()
 
-#print kings_and_queens_county_board
+#print nyc_counties

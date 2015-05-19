@@ -138,7 +138,11 @@ def get_councilor_data():
 get_councilor_data()
 
 
-fieldnames = ['official.name', 'office.name','electoral.district','address','phone','website', 'email', 'facebook', 'twitter']
+for dictionary in dictList:
+    dictionary['state'] = 'TX'
+
+
+fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
 bexar_county_board_file = open('bexar_county_board.csv','wb')
 csvwriter = csv.DictWriter(bexar_county_board_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

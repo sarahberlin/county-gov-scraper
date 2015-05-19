@@ -26,7 +26,7 @@ sources = []
 for csv_file in csv_files:
     newDict = {}
     newDict['file'] = csv_file
-    newDict['fieldnames'] = ['electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
+    newDict['fieldnames'] = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
     sources.append(newDict)
 
 
@@ -71,7 +71,7 @@ print "Scraping complete"
 
 #these are all of the counties that should be in tge merged file. this list will be used to check future iterations of the file against
 
-master_counties = ['Bexar', 'Broward', 'Clark', 'Cook', 'Dallas', 'Harris', 'King', 'Los Angeles', 'Maricopa', 'Miami-Dade', 'Orange', 'Riverside', 'San Bernardino', 'San Diego', 'Santa Clara', 'Tarrant', 'Queens', 'Brooklyn']
+master_counties = ['Bexar', 'Broward', 'Clark', 'Cook', 'Dallas', 'Harris', 'King', 'Los Angeles', 'Maricopa', 'Miami-Dade', 'Orange', 'Riverside', 'San Bernardino', 'San Diego', 'Santa Clara', 'Tarrant', 'Queens', 'Brooklyn', 'Wayne', 'Manhattan', 'Alameda']
 
 
 #these are all of the counties in the current version of the file

@@ -82,10 +82,11 @@ def govtdata():
 
 govtdata()
 
-
+for dictionary in dictList:
+    dictionary['state'] = 'CA'
 
 #creates csv
-fieldnames = ['official.name', 'office.name','electoral.district','address','phone','website', 'email', 'facebook', 'twitter']
+fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
 la_county_supervisors_file = open('la_county_supervisors.csv','wb')
 csvwriter = csv.DictWriter(la_county_supervisors_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

@@ -75,9 +75,11 @@ def govtdata():
 
 govtdata()
 
+for dictionary in dictList:
+    dictionary['state'] = 'CA'
 
 #creates csv
-fieldnames = ['official.name','electoral.district', 'office.name','phone','website']
+fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
 sandiego_county_board_file = open('sandiego_county_board.csv','wb')
 csvwriter = csv.DictWriter(sandiego_county_board_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

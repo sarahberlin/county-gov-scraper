@@ -141,8 +141,11 @@ def get_councilor_data():
 get_councilor_data()
 
 
+for dictionary in dictList:
+    dictionary['state'] = 'TX'
+
 #creates csv
-fieldnames = ['official.name', 'office.name','electoral.district','address','phone','website', 'email', 'facebook', 'twitter']
+fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
 dallas_county_board_file = open('dallas_county_board.csv','wb')
 csvwriter = csv.DictWriter(dallas_county_board_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))
