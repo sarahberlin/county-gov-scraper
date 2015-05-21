@@ -6,7 +6,7 @@ from csv import DictWriter
 from csv import DictReader
 import os
 
-path = ###whatever path is
+path = '/Users/sarahberlin/Desktop/PYTHON/Scraping/County'
 os.listdir(path)
 
 #run all of the python files in this directory so that the csv's are up to date
@@ -71,7 +71,7 @@ print "Scraping complete"
 
 #these are all of the counties that should be in tge merged file. this list will be used to check future iterations of the file against
 
-master_counties = ['Bexar', 'Broward', 'Clark', 'Cook', 'Dallas', 'Harris', 'King', 'Los Angeles', 'Maricopa', 'Miami-Dade', 'Orange', 'Riverside', 'San Bernardino', 'San Diego', 'Santa Clara', 'Tarrant', 'Queens', 'Brooklyn', 'Wayne', 'Manhattan', 'Alameda']
+master_counties = ['Bexar', 'Broward', 'Clark', 'Cook', 'Dallas', 'Harris', 'King', 'Los Angeles', 'Maricopa', 'Miami-Dade', 'Orange', 'Riverside', 'San Bernardino', 'San Diego', 'Santa Clara', 'Tarrant', 'Queens', 'Brooklyn', 'Wayne', 'Manhattan', 'Alameda', 'Suffolk']
 
 
 #these are all of the counties in the current version of the file

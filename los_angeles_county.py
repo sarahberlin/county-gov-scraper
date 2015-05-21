@@ -58,13 +58,14 @@ for page_url in page_urls:
 
 #get data drom non-commissioner sites
 def govtdata():
-    govsites = ['http://assessor.lacounty.gov/', 'http://da.lacounty.gov/']
+    govsites = ['http://assessor.lacounty.gov/', 'http://da.lacounty.gov/', 'http://sheriff.lacounty.gov/wps/portal/lasd']
     for url in govsites:
         if checkURL(url) == 404:
             print '404 error. Check the url for {0}'.format(url)
         else:
             assessorDict = {}
             DADict = {}
+            sheriffDict = {}
             soup = bs4.BeautifulSoup((requests.get(url)).text)
             if url == 'http://assessor.lacounty.gov/':
                 assessorDict['official.name'] = soup.find('div', {'class': 'ms-layer  msp-cn-8-5'}).get_text().encode('utf-8').replace('\n', '')
@@ -78,6 +79,12 @@ def govtdata():
                 DADict['website'] = url
                 DADict['electoral.district'] = "Los Angeles County"
                 dictList.append(DADict)
+            elif url == 'http://sheriff.lacounty.gov/wps/portal/lasd':
+                sheriffDict['official.name'] = soup.find_all('td', {'colspan': 2})[1].get_text().encode('utf-8')
+                sheriffDict['office.name'] = 'Sheriff'
+                sheriffDict['website'] = url
+                sheriffDict['electoral.district'] = 'Los Angeles County'
+                dictList.append(sheriffDict)
     return dictList
 
 govtdata()
