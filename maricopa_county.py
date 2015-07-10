@@ -40,7 +40,7 @@ def get_websites():
         print '404 error. Check the url for {0}'.format(root_url)
     else:
         soup = bs4.BeautifulSoup((requests.get(root_url)).text)
-        for x in range(8,25):
+        for x in range(10,26):
             websites.append([a.attrs.get('href') for a in soup.select('table.SectionBody a[href]')][x].encode('utf-8'))
         websites.pop(1)
     return websites
@@ -60,7 +60,7 @@ def get_govt_data():
                     newDict['electoral.district'] = 'Maricopa County Council District '+ names_and_offices[x].split(' - ')[0].replace(' BOS', '')[-1]
                     newDict['website'] = 'https://www.maricopa.gov' + websites[x]
                     newDict['address'] = '301 W. Jefferson, 10th Floor Phoenix, Arizona 85003'
-                    contactpage = ('https://www.maricopa.gov' + websites[x]).replace('/default.aspx', '') + '/contact.aspx'
+                    contactpage = ('https://www.maricopa.gov' + websites[x]).replace('/default.aspx', '/') + 'contact.aspx'
                     if checkURL(contactpage) == 404:
                         print '404 error. Check the url for {0}'.format(contactpage)
                     else:

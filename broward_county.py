@@ -55,44 +55,20 @@ for page_url in page_urls:
 #scrapes sites for sheriff,property appraiser, clerk of courts, supervisor of elections
 
 def get_govt_data():
-    root_url = 'http://www.browardsoe.org/'
-    index_url = root_url +'ElectedOfficials.aspx?s=79'
-    if checkURL(index_url) == 404:
-        print '404 error. Check the url.'
-    else:
-        soup = bs4.BeautifulSoup((requests.get(index_url)).text)
-        clerkDict = {}
-        sheriffDict = {}
-        propertyDict = {}
-        supervisorDict = {}
-        for x in range (0, 180):
-            office = soup.select('tr td.ElectedOfficials_Office')[x].get_text().encode('utf-8').replace("*", '')
-            official = soup.select('td.ElectedOfficials_ElectedOfficial a')[x].text.encode('utf-8')
-            website = [a.attrs.get('href') for a in soup.select('td.ElectedOfficials_ElectedOfficial a[href]')][x]
-            if "Clerk of the Circuit Court" in office:
-                clerkDict['office.name']= office
-                clerkDict['official.name'] = official
-                clerkDict['website'] = root_url +website
-                clerkDict['electoral.district'] = "Broward County"
-                dictList.append(clerkDict)
-            elif "Sheriff" in office:
-                sheriffDict['office.name']= office
-                sheriffDict['official.name'] = official
-                sheriffDict['website'] = root_url +website
-                sheriffDict['electoral.district'] = "Broward County"
-                dictList.append(sheriffDict)
-            elif "Property Appraiser" in office:
-                propertyDict['office.name']= office
-                propertyDict['official.name'] = official
-                propertyDict['website'] = root_url +website
-                propertyDict['electoral.district'] = "Broward County"
-                dictList.append(propertyDict)
-            elif "Supervisor of Elections" in office:
-                supervisorDict['office.name']= office
-                supervisorDict['official.name'] = official
-                supervisorDict['website'] = root_url +website
-                supervisorDict['electoral.district'] = "Broward County"
-                dictList.append(supervisorDict)
+    sites = ['http://www.browardsoe.org/Portals/Broward/Documents/OfficeHolders/electedofficial.aspx_id_332.html', 'http://www.browardsoe.org/Portals/Broward/Documents/OfficeHolders/electedofficial.aspx_id_333.html', 'http://www.browardsoe.org/Portals/Broward/Documents/OfficeHolders/electedofficial.aspx_id_334.html', 'http://www.browardsoe.org/Portals/Broward/Documents/OfficeHolders/electedofficial.aspx_id_320.html']
+    for site in sites:
+        if checkURL(site) == 404:
+            print '404 error. Check the url for {0}'.format(site)
+        else:
+            soup = bs4.BeautifulSoup((requests.get(site)).text)
+            newDict = {}
+            newDict['office.name'] = soup.select('h1')[0].get_text().encode('utf-8').replace('\n','')
+            newDict['official.name'] = soup.find_all('span', {'id':'lblName'})[0].get_text().encode('utf-8')
+            newDict['website'] = [a.attrs.get('href') for a in soup.select('a[href]')][1]
+            newDict['address'] = soup.find_all('span', {'id':'lblLocation1Address'})[0].get_text().encode('utf-8').replace('Room', ' Room').replace('Fort', " Fort").strip()
+            newDict['phone'] = soup.find_all('span', {'id':'lblOffice1Phone'})[0].get_text().encode('utf-8')
+            newDict['electoral.district'] = "Broward County"
+            dictList.append(newDict)
     return dictList
 
 get_govt_data()

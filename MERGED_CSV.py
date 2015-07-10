@@ -5,6 +5,10 @@ import csv
 from csv import DictWriter
 from csv import DictReader
 import os
+import datetime
+
+#establishes today's date, which will be included in the file name
+today = datetime.date.today()
 
 path = '/Users/sarahberlin/Desktop/PYTHON/Scraping/County'
 os.listdir(path)
@@ -13,7 +17,7 @@ os.listdir(path)
 for py_file in os.listdir(path):
     if ".py" in py_file and 'MERGED' not in py_file:
         os.system("python {0}".format(py_file))
-        print py_file
+        print py_file #prints name of file after it's been run, which keeps track of where the script is
 
 #get names of csv files so they can be merged
 csv_files = []
@@ -52,7 +56,7 @@ for source in sources:
 
 #tries to write each of those rows to the new csv and then close the csv
 fieldnames = all_fields
-merged_file = open('merged_file.csv','wb')
+merged_file = open('merged_file-{0}.csv'.format(today),'wb')
 csvwriter = csv.DictWriter(merged_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))
 for row in all_rows:
@@ -61,7 +65,7 @@ for row in all_rows:
 merged_file.close()
 
 
-with open("merged_file.csv", "r") as merged_file_csv:
+with open('merged_file-{0}.csv'.format(today), "r") as merged_file_csv:
      merged_file = merged_file_csv.read()
 
 #print merged_file
@@ -69,7 +73,7 @@ print "Scraping complete"
 
 
 
-#these are all of the counties that should be in tge merged file. this list will be used to check future iterations of the file against
+#these are all of the counties that should be in the merged file. this list will be used to check future iterations of the file against
 
 master_counties = ['Bexar', 'Broward', 'Clark', 'Cook', 'Dallas', 'Harris', 'King', 'Los Angeles', 'Maricopa', 'Miami-Dade', 'Orange', 'Riverside', 'San Bernardino', 'San Diego', 'Santa Clara', 'Tarrant', 'Queens', 'Brooklyn', 'Wayne', 'Manhattan', 'Alameda', 'Suffolk']
 

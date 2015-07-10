@@ -43,7 +43,7 @@ def get_data():
 			govtdata = {}
 			if 'Board' in soup.select('ul.bullet li')[y].get_text():
 				govtdata['office.name'] = soup.select('ul.bullet li')[y].get_text().encode('utf-8').split(',')[0] + soup.select('ul.bullet li')[y].get_text().encode('utf-8').split(',')[1]
-				govtdata['official.name'] = soup.select('ul.bullet li')[y].get_text().encode('utf-8').split(',')[2].replace('\t', '')
+				govtdata['official.name'] = soup.select('ul.bullet li')[y].get_text().encode('utf-8').split(',')[2].replace('\t', '').strip()
 				govtdata['electoral.district'] = 'Alameda County Council District ' + soup.select('ul.bullet li')[y].get_text().encode('utf-8')[22]
 				govtdata['website'] = root_url + urls[y]
 				govtdata['address'] = 'County of Alameda Administration Building 1221 Oak Street, #536, Oakland, CA 94612'
@@ -51,7 +51,7 @@ def get_data():
 				dictList.append(govtdata)
 			else:
 				govtdata['office.name'] = soup.select('ul.bullet li')[y].get_text().encode('utf-8').split(',')[0]
-				govtdata['official.name'] = soup.select('ul.bullet li')[y].get_text().encode('utf-8').split(',')[1]
+				govtdata['official.name'] = soup.select('ul.bullet li')[y].get_text().encode('utf-8').split(',')[1].strip()
 				govtdata['electoral.district'] = 'Alameda County'
 				govtdata['website'] = root_url + urls[y]
 				dictList.append(govtdata)

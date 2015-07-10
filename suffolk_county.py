@@ -46,7 +46,7 @@ def make_dicts():
             govtdata = {}
             govtdata['official.name']= names[x]
             govtdata['office.name']= "County Legislator District {0}".format(x+1)
-            govtdata['electoral.district']= "County Council District {0}".format(x+1)
+            govtdata['electoral.district']= "Suffolk County Council District {0}".format(x+1)
             govtdata['website']= page_urls [x]
             govtdata['address']=  'William H. Rogers Building, North County Complex Smithtown, NY 11787'
             govtdata['phone']=  '(631) 853-4070'

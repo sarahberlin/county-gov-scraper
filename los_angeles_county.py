@@ -48,7 +48,7 @@ def get_councilor_data(page_url):
             councilor_data['address'] = '500 W. Temple St. Room 358, Los Angeles 90012'
         except:
             pass
-    return councilor_data
+        return councilor_data
 
 
 #run the functions together

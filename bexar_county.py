@@ -115,6 +115,14 @@ def get_councilor_data():
                 councilor_data['office.name'] = 'County Commissioner Precinct '+ page[-1]
                 councilor_data['electoral.district'] = 'Bexar County Council District ' + page[-1]
                 dictList.append(councilor_data)
+            elif 'Precinct-4' in page:
+                councilor_data['official.name']= official_soup.select('h3')[2].get_text().encode('utf-8')
+                councilor_data['website']= page
+                councilor_data['address']='101 W. Nueva 10th Floor San Antonio, TX 78205-3482'
+                councilor_data['phone']='210-335-2626'
+                councilor_data['office.name'] = 'County Commissioner Precinct '+ page[-1]
+                councilor_data['electoral.district'] = 'Bexar County Council District ' + page[-1]
+                dictList.append(councilor_data)
             elif 'judge' in page:
                 councilor_data['official.name'] = official_soup.select('title')[0].get_text().encode('utf-8').split('Judge')[1].strip()
                 councilor_data['office.name'] = 'County Judge'
