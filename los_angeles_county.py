@@ -67,24 +67,27 @@ def govtdata():
             DADict = {}
             sheriffDict = {}
             soup = bs4.BeautifulSoup((requests.get(url)).text)
-            if url == 'http://assessor.lacounty.gov/':
-                assessorDict['official.name'] = soup.find('div', {'class': 'ms-layer  msp-cn-8-5'}).get_text().encode('utf-8').replace('\n', '')
-                assessorDict['office.name'] = "Assessor"
-                assessorDict['website'] = url
-                assessorDict['electoral.district'] = "Los Angeles County"
-                dictList.append(assessorDict)
-            elif url == 'http://da.lacounty.gov/':
-                DADict['official.name'] = soup.find('span', {'class':'big_blue_header'}).get_text().encode('utf-8')
-                DADict['office.name'] = 'District Attorney'
-                DADict['website'] = url
-                DADict['electoral.district'] = "Los Angeles County"
-                dictList.append(DADict)
-            elif url == 'http://sheriff.lacounty.gov/wps/portal/lasd':
-                sheriffDict['official.name'] = soup.find_all('td', {'colspan': 2})[1].get_text().encode('utf-8')
-                sheriffDict['office.name'] = 'Sheriff'
-                sheriffDict['website'] = url
-                sheriffDict['electoral.district'] = 'Los Angeles County'
-                dictList.append(sheriffDict)
+            try:
+                if url == 'http://assessor.lacounty.gov/':
+                    assessorDict['official.name'] = soup.find('div', {'class': 'ms-layer  msp-cn-8-5'}).get_text().encode('utf-8').replace('\n', '')
+                    assessorDict['office.name'] = "Assessor"
+                    assessorDict['website'] = url
+                    assessorDict['electoral.district'] = "Los Angeles County"
+                    dictList.append(assessorDict)
+                elif url == 'http://da.lacounty.gov/':
+                    DADict['official.name'] = soup.find('span', {'class':'big_blue_header'}).get_text().encode('utf-8')
+                    DADict['office.name'] = 'District Attorney'
+                    DADict['website'] = url
+                    DADict['electoral.district'] = "Los Angeles County"
+                    dictList.append(DADict)
+                elif url == 'http://sheriff.lacounty.gov/wps/portal/lasd':
+                    sheriffDict['official.name'] = soup.find_all('td', {'colspan': 2})[1].get_text().encode('utf-8')
+                    sheriffDict['office.name'] = 'Sheriff'
+                    sheriffDict['website'] = url
+                    sheriffDict['electoral.district'] = 'Los Angeles County'
+                    dictList.append(sheriffDict)
+            except:
+                pass
     return dictList
 
 govtdata()

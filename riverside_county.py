@@ -9,7 +9,8 @@ root_url = 'http://www.countyofriverside.us/AbouttheCounty/SupervisorsandElected
 #master list of all the dictionaries containing officials' info
 dictList = []
 
-#checks that a given url works and doesn't return a 404 error
+#checks that a given url works and doesn't return a 404 error. NEED TO INTEGRATE THROUGHOUT####
+
 def checkURL(x):
     try:
         code = urllib2.urlopen(x).code
@@ -17,46 +18,38 @@ def checkURL(x):
         code = 404
     return code
 
-#scrapes all government officials
+soup = bs4.BeautifulSoup((requests.get(root_url)).text)
+info = soup.find_all('div', {'id':'dnn_ctr574_ContentPane'})[0]
+sections = info.find_all('p')
+BOS = sections[1]
+other_officials = sections[2]
+
+def get_supervisors_data():
+    for a in BOS.select('a'):
+        newDict = {}
+        newDict['official.name'] = a.get_text().encode('utf-8').split(' - ')[1]
+        newDict['office.name']= "Supervisor " + a.get_text().encode('utf-8').split(' - ')[0]
+        newDict['electoral.district'] = "Riverside County Council " + a.get_text().encode('utf-8').split(' - ')[0][-1]
+        newDict['address'] = '4080 Lemon Street, 5th Floor Riverside, California 92501'
+        newDict['website'] = [a.attrs.get('href')][0]
+        newDict['phone'] = '(951) 955-10{0}0'.format(a.get_text().encode('utf-8').split(' - ')[0][-1])
+        newDict['email'] = 'district{0}@rcbos.org'.format(a.get_text().encode('utf-8').split(' - ')[0][-1])
+        dictList.append(newDict)
+    return dictList
+
+get_supervisors_data()
+
 def get_govt_data():
-    if checkURL(root_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url)
-    else:
-        soup = bs4.BeautifulSoup((requests.get(root_url)).text)
-        info = soup.find_all('div', {'id':'dnn_ctr574_ContentPane'})[0].get_text().encode('utf-8').split('\n')[6:11] + soup.find_all('div', {'id':'dnn_ctr574_ContentPane'})[0].get_text().encode('utf-8').split('\n')[12:17]
-        for x in range (0,10):
+    for a in other_officials.select('a'):
+        try:
             newDict = {}
-            if x == 8:
-                newDict['official.name']= 'Stanley Sniff'
-                newDict['office.name']= info[x]
-            else:
-                newDict['office.name']= info[x].split(' - ')[0]
-                newDict['official.name']= info[x].split(' - ')[1]
-            if "District" in newDict['office.name'] and "Attorney" not in newDict['office.name']:
-                newDict['office.name'] = "Supervisor "+ newDict['office.name'] 
-                bossite= [a.attrs.get('href') for a in soup.select('a[href^=http://www.countyofriverside.us/AbouttheCounty/BoardofSupervisors]')][0]
-                bossoup= bs4.BeautifulSoup((requests.get(bossite)).text)
-                newDict['website'] = [a.attrs.get('href') for a in bossoup.select('a[href^=http://www.rivco]')][x].encode('utf-8')
-                newDict['email'] = [a.attrs.get('href') for a in bossoup.select('a[href^=mailto]')][x].encode('utf-8').replace('mailto:', '')
-                newDict['address'] = '4080 Lemon Street - 5th Floor Riverside, California 92501'
-                newDict['phone'] = '(951) 955-10{0}0'.format(info[x].split(' - ')[0][-1])
-                newDict['electoral.district'] = "Riverside County Council " +info[x].split(' - ')[0]
-            elif "Assessor" in newDict['office.name']:
-                newDict['website'] = [a.attrs.get('href') for a in soup.select('a[href^http://www.asrc]')][0]
-                newDict['electoral.district']= 'Riverside County'
-            elif 'Auditor' in newDict['office.name']:   
-                newDict['website'] = [a.attrs.get('href') for a in soup.select('a[href^http://www.aud]')][0]
-                newDict['electoral.district']= 'Riverside County'
-            elif 'District' in newDict['office.name']:   
-                newDict['website'] = [a.attrs.get('href') for a in soup.select('a[href^http://www.rivcoda]')][0]
-                newDict['electoral.district']= 'Riverside County'
-            elif 'Sheriff' in newDict['office.name']:   
-                newDict['website'] = [a.attrs.get('href') for a in soup.select('a[href^http://www.riversidesheriff]')][0]
-                newDict['electoral.district']= 'Riverside County'
-            elif 'Treasurer' in newDict['office.name']:   
-                newDict['website'] = [a.attrs.get('href') for a in soup.select('a[href^http://www.countytreasurer]')][0]
-                newDict['electoral.district']= 'Riverside County'
+            newDict['official.name'] = a.get_text().encode('utf-8').split(' - ')[1]
+            newDict['office.name']= a.get_text().encode('utf-8').split(' - ')[0]
+            newDict['website'] = [a.attrs.get('href')][0]
+            newDict['electoral.district'] = 'Riverside County'
             dictList.append(newDict)
+        except:
+            pass
     return dictList
 
 get_govt_data()

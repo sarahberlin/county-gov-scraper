@@ -5,11 +5,10 @@ import csv
 from csv import DictWriter
 import urllib, urllib2
 
+masterList = []
+
 root_url = 'http://www.clarkcountynv.gov'
 index_url = root_url + '/electedofficials/Pages/Default2.aspx'
-
-#master list of all the dictionaries containing officials' info
-dictList = []
 
 #checks that a given url works and doesn't return a 404 error
 def checkURL(x):
@@ -52,63 +51,60 @@ def get_councilor_data(page_url):
 #runs scripts together
 page_urls = get_page_urls()
 for page_url in page_urls:
-    dictList.append(get_councilor_data(page_url)) 
+    masterList.append(get_councilor_data(page_url)) 
 
-#gets data from non-commissioner officials
-def get_govt_data():
-	govt_page = '/ElectedOfficials/Pages/ClarkCountyOfficials.aspx'
-	if checkURL(root_url + govt_page) == 404:
-		print '404 error. Check the url for {0}'.format(govt_page)
-	else:
-		soup = bs4.BeautifulSoup((requests.get(root_url + govt_page)).text)
-		table = []
-		for x in range(2,23):
-			table.append(soup.select('tbody td')[x].get_text().encode('utf-8').replace('\xc2\xa0', '').replace('\n', '').strip())
-		table_data = []
-		for x in range(0,21):
-			if x < 3:
-				table_data.append(table[x])
-			elif 5 < x < 9:
-				table_data.append(table[x])
-			elif 11 < x < 15:
-				table_data.append(table[x])
-			elif 17 < x:
-				table_data.append(table[x])
-		links = [a.attrs.get('href') for a in soup.select('td p a[href]')][:5]
-		for x in range(0,10):
-			if x == 0:
-				newDict ={}
-				newDict['office.name']= table_data[x]
-				newDict['official.name']= table_data[x+3]
-				newDict['website']= 'http://www.clarkcountynv.gov/'+links[x]
-				newDict['electoral.district'] = 'Clark County'
-				dictList.append(newDict)
-			elif x == 1:
-				newDict ={}
-				newDict['office.name']= table_data[x]
-				newDict['official.name']= table_data[x+3]
-				newDict['website'] = 'http://www.clarkcountynv.gov/'
-				newDict['electoral.district'] = 'Clark County'
-				dictList.append(newDict)
-			elif x == 2:
-				newDict ={}
-				newDict['office.name']= table_data[x]
-				newDict['official.name']= table_data[x+3]
-				newDict['website'] = 'http://www.clarkcountynv.gov/'+links[x-1]
-				newDict['electoral.district'] = 'Clark County'
-				dictList.append(newDict)
-			elif 9> x > 5:
-				newDict ={}
-				newDict['office.name']= table_data[x]
-				newDict['official.name']= table_data[x+3]
-				newDict['website']='http://www.clarkcountynv.gov/'+links[x-4]
-				newDict['electoral.district'] = 'Clark County'
-				dictList.append(newDict)
-	return dictList
 
-get_govt_data()
+#pulls down table of elected officials
+clark_officials = 'http://www.clarkcountynv.gov/ElectedOfficials/Pages/ClarkCountyOfficials.aspx'
+req = urllib2.Request(clark_officials)
+page = urllib2.urlopen(req)
+soup = bs4.BeautifulSoup(page)
+table = soup.find("table", { "style" : "height:329px;width:653px;background-color:#c6d9f0" })
 
-for dictionary in dictList:
+#scrapes table of elected officials, adding each dictionary, some of which do not have data, to templist. note: cells refers to the columns, their indices are 0, 1, 2
+tempList = []
+def scrape_officials_table():
+	for i,row in enumerate(table.findAll("tr")):
+		cells = row.findAll("td")
+		if len(cells) > 2:
+			class System():
+				def __init__(self):
+					self.tempList = []
+			columnlist = []
+			column1 = cells[0]
+			column2 = cells[1]
+			column3 = cells[2]
+			columnlist.extend([column1, column2, column3])
+			for column in columnlist:
+				for p in column:
+					try:
+						pdict = {}
+						pdict['text'] = p.get_text().encode('utf-8').replace('\xa0', ' ').replace('\xc2', '').strip()
+						pdict['link'] = [a.attrs.get('href') for a in column.select('p a[href]')]
+						if len(pdict['text']) > 0 or len(pdict['link']) > 0:
+							tempList.append(pdict)
+					except:
+						pass
+	return tempList
+
+scrape_officials_table()
+
+#loops through the dictionaries in templist and reformats data before appending to masterList
+def make_officials_dicts():
+	for x in range(0,9):
+		if 9 > x > 5 or x < 3:
+			officialDict = {}
+			officialDict['office.name'] = tempList[x]['text']
+			officialDict['official.name'] = tempList[x+3]['text']
+			officialDict['website'] = root_url + str(tempList[x+3]['link']).replace('[', '').replace(']','').replace("'", "")
+			officialDict['electoral.district'] = "Clark County"
+			masterList.append(officialDict)
+	return masterList
+
+make_officials_dicts()
+
+
+for dictionary in masterList:
     dictionary['state'] = 'NV'
 
 #creates csv
@@ -116,7 +112,7 @@ fieldnames = ['state','electoral.district','office.name','official.name', 'addre
 clark_county_board_file = open('clark_county_board.csv','wb')
 csvwriter = csv.DictWriter(clark_county_board_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))
-for row in dictList:
+for row in masterList:
     csvwriter.writerow(row)
 
 clark_county_board_file.close()
@@ -125,3 +121,4 @@ with open("clark_county_board.csv", "r") as clark_county_board_csv:
      clark_county_board = clark_county_board_csv.read()
 
 #print clark_county_board
+

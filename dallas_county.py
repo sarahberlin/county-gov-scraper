@@ -113,28 +113,22 @@ def get_councilor_data():
         else:
             councilor_soup = bs4.BeautifulSoup((requests.get(('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/'))).text)
             newDict = {}
+            newDict['website'] = ('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')
+            newDict['address']=  '411 Elm St., 2nd Floor Dallas, Texas 75202'
             if 'daniel' in site or 'district4' in site:
                 newDict['official.name'] = councilor_soup.select('td li a')[1].get_text().encode('utf-8').title()
                 newDict['office.name']="County Commissioner "+councilor_soup.select('td li a')[2].get_text().encode('utf-8').title().replace(' Map', '')
                 newDict['electoral.district']= "Dallas County Council " + councilor_soup.select('td li a')[2].get_text().encode('utf-8').title().replace(' Map', '')
-                newDict['website'] = ('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')
-                newDict['address']= '411 Elm St., 2nd Floor Dallas, Texas 75202'
                 newDict['phone']='214' + councilor_soup.select('table')[1].get_text().encode('utf-8').split('Fax')[0].replace('(214)', '214').split('\n214')[1].split('Office')[0].strip()
-                dictList.append(newDict)
             elif 'district2' in site:
                 newDict['official.name'] = councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[0]
                 newDict['office.name']= "County Commissioner "+councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[1]
                 newDict['electoral.district']= "Dallas County Council "+councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[1]
-                newDict['website'] = ('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')
-                newDict['address']=  '411 Elm St., 2nd Floor Dallas, Texas 75202'
-                dictList.append(newDict)
             elif 'district3' in site:
                 newDict['official.name'] =councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[0].replace('Commissioner', '').strip()
                 newDict['office.name']="County Commissioner "+councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[1].strip()
                 newDict['electoral.district']= "Dallas County Council "+councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[1].strip()
-                newDict['website'] = ('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')
-                newDict['address']=  '411 Elm St., 2nd Floor Dallas, Texas 75202'
-                dictList.append(newDict)
+            dictList.append(newDict)
     return dictList
 
 
