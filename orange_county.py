@@ -80,7 +80,7 @@ def govtdata():
                 clerkDict['website'] = url
                 clerkDict['electoral.district'] = "Orange County"
             elif 'ac.ocgov' in url:
-                auditorDict['official.name'] = soup.select('title')[0].get_text().encode('utf-8').split('-')[2].strip()
+                auditorDict['official.name'] = soup.select('title')[0].get_text().encode('utf-8').split('Controller')[1].replace(' - ','')
                 auditorDict['office.name'] = "Auditor-Controller"
                 auditorDict['website'] = url
                 auditorDict['electoral.district'] = "Orange County"

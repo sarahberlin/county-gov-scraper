@@ -6,7 +6,7 @@ import sys
 import urllib, urllib2
 
 root_url = 'https://www.lacounty.gov/government'
-index_url = '/supervisors'
+index_url = root_url + '/supervisors'
 
 #creates empty list to store all of the officials' dictionaries
 dictList = []
@@ -21,17 +21,17 @@ def checkURL(x):
 
 #get page urls of all the councilors
 def get_page_urls():
-    if checkURL(root_url+index_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url+index_url)
+    if checkURL(index_url) == 404:
+        print '404 error. Check the url for {0}'.format(index_url)
     else:
-        response = requests.get(root_url+index_url)
+        response = requests.get(index_url)
         soup = bs4.BeautifulSoup(response.text)
         return [a.attrs.get('href') for a in soup.select('div.secondlevel-right a[href^=https://www.lacounty.gov/government/supervisors/]')]
 
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
-    if checkURL(root_url+index_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url+index_url)
+    if checkURL(page_url) == 404:
+        print '404 error. Check the url for {0}'.format(page_url)
     else:
         councilor_data = {}
         response = requests.get(page_url)
@@ -57,40 +57,52 @@ for page_url in page_urls:
     dictList.append(get_councilor_data(page_url))
 
 #get data drom non-commissioner sites
-def govtdata():
-    govsites = ['http://assessor.lacounty.gov/', 'http://da.lacounty.gov/', 'http://sheriff.lacounty.gov/wps/portal/lasd']
-    for url in govsites:
-        if checkURL(url) == 404:
+
+def assessor_scrape():
+    url = 'http://assessor.lacounty.gov/'
+    if checkURL(url) == 404:
             print '404 error. Check the url for {0}'.format(url)
-        else:
-            assessorDict = {}
-            DADict = {}
-            sheriffDict = {}
-            soup = bs4.BeautifulSoup((requests.get(url)).text)
-            try:
-                if url == 'http://assessor.lacounty.gov/':
-                    assessorDict['official.name'] = soup.find('div', {'class': 'ms-layer  msp-cn-8-5'}).get_text().encode('utf-8').replace('\n', '')
-                    assessorDict['office.name'] = "Assessor"
-                    assessorDict['website'] = url
-                    assessorDict['electoral.district'] = "Los Angeles County"
-                    dictList.append(assessorDict)
-                elif url == 'http://da.lacounty.gov/':
-                    DADict['official.name'] = soup.find('span', {'class':'big_blue_header'}).get_text().encode('utf-8')
-                    DADict['office.name'] = 'District Attorney'
-                    DADict['website'] = url
-                    DADict['electoral.district'] = "Los Angeles County"
-                    dictList.append(DADict)
-                elif url == 'http://sheriff.lacounty.gov/wps/portal/lasd':
-                    sheriffDict['official.name'] = soup.find_all('td', {'colspan': 2})[1].get_text().encode('utf-8')
-                    sheriffDict['office.name'] = 'Sheriff'
-                    sheriffDict['website'] = url
-                    sheriffDict['electoral.district'] = 'Los Angeles County'
-                    dictList.append(sheriffDict)
-            except:
-                pass
+    else:
+        soup = bs4.BeautifulSoup((requests.get(url)).text)
+        assessorDict = {}
+        assessorDict['official.name'] = soup.find('div', {'class': 'ms-layer  msp-cn-8-5'}).get_text().encode('utf-8').replace('\n', '')
+        assessorDict['office.name'] = "Assessor"
+        assessorDict['website'] = url
+        assessorDict['electoral.district'] = "Los Angeles County"
+        dictList.append(assessorDict)
     return dictList
 
-govtdata()
+def sheriff_scrape():
+    url = 'http://sheriff.lacounty.gov/wps/portal/lasd'
+    if checkURL(url) == 404:
+            print '404 error. Check the url for {0}'.format(url)
+    else:
+        soup = bs4.BeautifulSoup((requests.get(url)).text)
+        sheriffDict = {}
+        sheriffDict['official.name'] = soup.find_all('td', {'colspan': 2})[1].get_text().encode('utf-8')
+        sheriffDict['office.name'] = 'Sheriff'
+        sheriffDict['website'] = url
+        sheriffDict['electoral.district'] = 'Los Angeles County'
+        dictList.append(sheriffDict)
+    return dictList
+
+def da_scrape():
+    url = 'http://da.lacounty.gov/'
+    if checkURL(url) == 404:
+            print '404 error. Check the url for {0}'.format(url)
+    else:
+        soup = bs4.BeautifulSoup((requests.get(url)).text)
+        DADict = {}
+        DADict['official.name'] = soup.find('span', {'class':'big_blue_header'}).get_text().encode('utf-8')
+        DADict['office.name'] = 'District Attorney'
+        DADict['website'] = url
+        DADict['electoral.district'] = "Los Angeles County"
+        dictList.append(DADict)
+    return dictList
+
+#assessor_scrape()
+#sheriff_scrape()
+#da_scrape()
 
 for dictionary in dictList:
     dictionary['state'] = 'CA'

@@ -25,7 +25,8 @@ def kings_county():
 		newDict = {}
 		newDict['office.name'] = "Distict Attorney"
 		newDict['electoral.district'] = "Brooklyn"
-		newDict['official.name']= soup.select('h1')[0].get_text().encode('utf-8').replace('Brooklyn DA ', '')
+		newDict['official.name']= soup.select('h2')[0].get_text().encode('utf-8').title().replace('Brooklyn Da\n', '')
+
 		newDict['website'] = 'http://brooklynda.org'
 		dictList.append(newDict)
 	return dictList

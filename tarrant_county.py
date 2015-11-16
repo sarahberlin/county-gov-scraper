@@ -18,43 +18,53 @@ def checkURL(x):
         code = 404
     return code
 
-
-#creates list of the three tables that contain county elected officials
-soup = bs4.BeautifulSoup((requests.get(index_url)).text)
-ALLtables = soup.select('tbody')
-officials_to_scrape = [ALLtables[0],ALLtables[1], ALLtables[4], ALLtables[5],ALLtables[6]]
+#checks for error in index url, creates list of the three tables that contain county elected officials and returns officials_to_scrape
+def get_table():
+	if checkURL(index_url) == 404:
+		print '404 error. Check the url for {0}'.format(index_url)
+	else:
+		soup = bs4.BeautifulSoup((requests.get(index_url)).text)
+		ALLtables = soup.select('tbody')
+		officials_to_scrape = [ALLtables[0],ALLtables[1], ALLtables[4], ALLtables[5],ALLtables[6]]
+		return officials_to_scrape
 
 #loops through list, creates dictionaries for each official, adds them to dictList
 def table_scrape():
-	for table in officials_to_scrape:
-		for row in table:
-			tds = row('td')
-			newDict = {}
-			try:
-				newDict['official.name'] = tds[0].get_text().encode('utf-8').replace('\n', '')
-				newDict['office.name'] = tds[2].get_text().encode('utf-8').replace('\n', '')
-				newDict['electoral.district'] = "Tarrant County"
-				newDict['phone'] = tds[3].get_text().encode('utf-8')
-				newDict['website'] = index_url
-				newDict['state'] = 'TX'
-				dictList.append(newDict)
-			except:
-				pass
+	if checkURL(index_url) == 404:
+		print '404 error. Check the url for {0}'.format(index_url)
+	else:
+		for table in get_table():
+			for row in table:
+				tds = row('td')
+				newDict = {}
+				try:
+					newDict['official.name'] = tds[0].get_text().encode('utf-8').replace('\n', '')
+					newDict['office.name'] = tds[2].get_text().encode('utf-8').replace('\n', '')
+					newDict['electoral.district'] = "Tarrant County"
+					newDict['phone'] = tds[3].get_text().encode('utf-8')
+					newDict['website'] = index_url
+					newDict['state'] = 'TX'
+					dictList.append(newDict)
+				except:
+					pass
 	return dictList
 
 table_scrape()
 
 #adds additional detail to commissioners
 def add_fields():
-	for dictionary in dictList:
-		if "Commissioner PCT" in dictionary['office.name']:
-			dictionary['office.name'] = "Tarrant County "+dictionary['office.name'].replace('PCT', "Precinct")
-			dictionary['electoral.district'] = "Tarrant County Council District " + dictionary['office.name'][-1]
-			dictionary['address'] = '100 E. Weatherford, Fort Worth, Texas 76196'
-			dictionary['website'] = 'http://access.tarrantcounty.com/en/commissioners-court.html'
-		elif dictionary['office.name'] == "County Judge":
-			dictionary['address'] = '100 E. Weatherford, Fort Worth, Texas 76196'
-			dictionary['website'] = 'http://access.tarrantcounty.com/en/commissioners-court.html'
+	if checkURL(index_url) == 404:
+		print '404 error. Check the url for {0}'.format(index_url)
+	else:
+		for dictionary in dictList:
+			if "Commissioner PCT" in dictionary['office.name']:
+				dictionary['office.name'] = "Tarrant County "+dictionary['office.name'].replace('PCT', "Precinct")
+				dictionary['electoral.district'] = "Tarrant County Council District " + dictionary['office.name'][-1]
+				dictionary['address'] = '100 E. Weatherford, Fort Worth, Texas 76196'
+				dictionary['website'] = 'http://access.tarrantcounty.com/en/commissioners-court.html'
+			elif dictionary['office.name'] == "County Judge":
+				dictionary['address'] = '100 E. Weatherford, Fort Worth, Texas 76196'
+				dictionary['website'] = 'http://access.tarrantcounty.com/en/commissioners-court.html'
 			#print dictionary
 
 add_fields()

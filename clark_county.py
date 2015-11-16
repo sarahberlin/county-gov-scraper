@@ -54,52 +54,63 @@ for page_url in page_urls:
     masterList.append(get_councilor_data(page_url)) 
 
 
-#pulls down table of elected officials
+#checks for error in pulls down table of elected officials
 clark_officials = 'http://www.clarkcountynv.gov/ElectedOfficials/Pages/ClarkCountyOfficials.aspx'
-req = urllib2.Request(clark_officials)
-page = urllib2.urlopen(req)
-soup = bs4.BeautifulSoup(page)
-table = soup.find("table", { "style" : "height:329px;width:653px;background-color:#c6d9f0" })
+def get_table():
+	if checkURL(clark_officials) == 404:
+		print '404 error. Check the url for {0}'.format(clark_officials)
+	else:
+		req = urllib2.Request(clark_officials)
+		page = urllib2.urlopen(req)
+		soup = bs4.BeautifulSoup(page)
+		table = soup.find("table", { "style" : "height:329px;width:653px;background-color:#c6d9f0" })
+		return table
 
 #scrapes table of elected officials, adding each dictionary, some of which do not have data, to templist. note: cells refers to the columns, their indices are 0, 1, 2
 tempList = []
 def scrape_officials_table():
-	for i,row in enumerate(table.findAll("tr")):
-		cells = row.findAll("td")
-		if len(cells) > 2:
-			class System():
-				def __init__(self):
-					self.tempList = []
-			columnlist = []
-			column1 = cells[0]
-			column2 = cells[1]
-			column3 = cells[2]
-			columnlist.extend([column1, column2, column3])
-			for column in columnlist:
-				for p in column:
-					try:
-						pdict = {}
-						pdict['text'] = p.get_text().encode('utf-8').replace('\xa0', ' ').replace('\xc2', '').strip()
-						pdict['link'] = [a.attrs.get('href') for a in column.select('p a[href]')]
-						if len(pdict['text']) > 0 or len(pdict['link']) > 0:
-							tempList.append(pdict)
-					except:
-						pass
-	return tempList
+	if checkURL(clark_officials) == 404:
+		print '404 error. Check the url for {0}'.format(clark_officials)
+	else:
+		for i,row in enumerate(get_table().findAll("tr")):
+			cells = row.findAll("td")
+			if len(cells) > 2:
+				class System():
+					def __init__(self):
+						self.tempList = []
+				columnlist = []
+				column1 = cells[0]
+				column2 = cells[1]
+				column3 = cells[2]
+				columnlist.extend([column1, column2, column3])
+				for column in columnlist:
+					for p in column:
+						try:
+							pdict = {}
+							pdict['text'] = p.get_text().encode('utf-8').replace('\xa0', ' ').replace('\xc2', '').strip()
+							pdict['link'] = [a.attrs.get('href') for a in column.select('p a[href]')]
+							if len(pdict['text']) > 0 or len(pdict['link']) > 0:
+								tempList.append(pdict)
+						except:
+							pass
+		return tempList
 
 scrape_officials_table()
 
 #loops through the dictionaries in templist and reformats data before appending to masterList
 def make_officials_dicts():
-	for x in range(0,9):
-		if 9 > x > 5 or x < 3:
-			officialDict = {}
-			officialDict['office.name'] = tempList[x]['text']
-			officialDict['official.name'] = tempList[x+3]['text']
-			officialDict['website'] = root_url + str(tempList[x+3]['link']).replace('[', '').replace(']','').replace("'", "")
-			officialDict['electoral.district'] = "Clark County"
-			masterList.append(officialDict)
-	return masterList
+	if checkURL(clark_officials) == 404:
+		print '404 error. Check the url for {0}'.format(clark_officials)
+	else:
+		for x in range(0,9):
+			if 9 > x > 5 or x < 3:
+				officialDict = {}
+				officialDict['office.name'] = tempList[x]['text']
+				officialDict['official.name'] = tempList[x+3]['text']
+				officialDict['website'] = root_url + str(tempList[x+3]['link']).replace('[', '').replace(']','').replace("'", "")
+				officialDict['electoral.district'] = "Clark County"
+				masterList.append(officialDict)
+		return masterList
 
 make_officials_dicts()
 

@@ -4,6 +4,9 @@ import csv
 from csv import DictWriter
 import urllib, urllib2
 
+
+root_url = 'https://www.maricopa.gov/MenuDetail.aspx?Menu=deptView&a=dept1'
+
 #master list of all the dictionaries containing officials' info
 dictList = []
 
@@ -15,11 +18,9 @@ def checkURL(x):
         code = 404
     return code
 
-
 #get urls for supervisors and adds them to a list
 supervisor_websites = []
 def get_supervisor_websites():
-	root_url = 'https://www.maricopa.gov/MenuDetail.aspx?Menu=deptView&a=dept1'
 	soup = bs4.BeautifulSoup((requests.get(root_url)).text)
 	for site in [a.attrs.get('href') for a in soup.select('table.SectionBody a[href]')]:
 		if "/dist" in site:

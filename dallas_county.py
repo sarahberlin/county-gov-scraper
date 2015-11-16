@@ -35,6 +35,7 @@ def get_govt_sites():
 
 get_govt_sites()
 
+
 #get data from non-commissioners
 def govtdata():
     cjudgeDict = {}
@@ -49,13 +50,12 @@ def govtdata():
             if checkURL(root_url+'/'+site) == 404:
                 print '404 error. Check the url for {0}'.format(root_url+'/'+site)
             else:
-                if site == 'department/da/da_index.php':
-                    soup = bs4.BeautifulSoup((requests.get(root_url+'/'+site)).text)
-                    DADict['official.name'] = soup.select('p b')[0].get_text().encode('utf-8')
-                    DADict['office.name'] = "District Attorney"
-                    DADict['website'] = root_url + '/' + site
-                    DADict['electoral.district'] = "Dallas County"
-                    dictList.append(DADict)
+                soup = bs4.BeautifulSoup((requests.get((root_url + '/' + site).replace('/da_index.php', '/meettheda.php'))).text)
+                DADict['official.name'] = soup.select('p.subhead')[0].get_text().encode('utf-8')
+                DADict['office.name'] = "District Attorney"
+                DADict['website'] = root_url + '/' + site
+                DADict['electoral.district'] = "Dallas County"
+                dictList.append(DADict)
         else:
             if checkURL(root_url+site) == 404:
                 print '404 error. Check the url for {0}'.format(root_url+site)
@@ -68,7 +68,7 @@ def govtdata():
                     cjudgeDict['electoral.district'] = "Dallas County"
                     dictList.append(cjudgeDict)
                 elif site == '/department/countyclerk/countyclerk.php':
-                    clerkDict['official.name'] = soup.select('p.subhead')[0].get_text().encode('utf-8')
+                    clerkDict['official.name'] = soup.select('p.subhead')[2].get_text().encode('utf-8')
                     clerkDict['office.name'] = "County Clerk"
                     clerkDict['website'] = root_url + site
                     clerkDict['electoral.district'] = "Dallas County"
@@ -105,30 +105,33 @@ govtdata()
 #scrape county commissioner's sites
 def get_councilor_data():
     councilors_url = 'http://www.dallascounty.org/department/comcrt/whois.php'
-    soup = bs4.BeautifulSoup((requests.get(councilors_url)).text)
-    councilor_sites = [a.attrs.get('href') for a in soup.select('table.alternate_rows a[href]')][2:]
-    for site in councilor_sites:
-        if checkURL(('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')) == 404:
-            print '404 error. Check the url for {0}'.format(('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/'))
-        else:
-            councilor_soup = bs4.BeautifulSoup((requests.get(('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/'))).text)
-            newDict = {}
-            newDict['website'] = ('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')
-            newDict['address']=  '411 Elm St., 2nd Floor Dallas, Texas 75202'
-            if 'daniel' in site or 'district4' in site:
-                newDict['official.name'] = councilor_soup.select('td li a')[1].get_text().encode('utf-8').title()
-                newDict['office.name']="County Commissioner "+councilor_soup.select('td li a')[2].get_text().encode('utf-8').title().replace(' Map', '')
-                newDict['electoral.district']= "Dallas County Council " + councilor_soup.select('td li a')[2].get_text().encode('utf-8').title().replace(' Map', '')
-                newDict['phone']='214' + councilor_soup.select('table')[1].get_text().encode('utf-8').split('Fax')[0].replace('(214)', '214').split('\n214')[1].split('Office')[0].strip()
-            elif 'district2' in site:
-                newDict['official.name'] = councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[0]
-                newDict['office.name']= "County Commissioner "+councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[1]
-                newDict['electoral.district']= "Dallas County Council "+councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[1]
-            elif 'district3' in site:
-                newDict['official.name'] =councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[0].replace('Commissioner', '').strip()
-                newDict['office.name']="County Commissioner "+councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[1].strip()
-                newDict['electoral.district']= "Dallas County Council "+councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[1].strip()
-            dictList.append(newDict)
+    if checkURL(councilors_url) == 404:
+        print '404 error. Check the url for {0}'.format(councilors_url)
+    else:
+        soup = bs4.BeautifulSoup((requests.get(councilors_url)).text)
+        councilor_sites = [a.attrs.get('href') for a in soup.select('table.alternate_rows a[href]')][2:]
+        for site in councilor_sites:
+            if checkURL(('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')) == 404:
+                print '404 error. Check the url for {0}'.format(('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/'))
+            else:
+                councilor_soup = bs4.BeautifulSoup((requests.get(('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/'))).text)
+                newDict = {}
+                newDict['website'] = ('http://www.dallascounty.org/department/comcrt/' + site).replace('/department/comcrt//department/comcrt/','/department/comcrt/')
+                newDict['address']=  '411 Elm St., 2nd Floor Dallas, Texas 75202'
+                if 'daniel' in site or 'district4' in site:
+                    newDict['official.name'] = councilor_soup.select('td li a')[1].get_text().encode('utf-8').title()
+                    newDict['office.name']="County Commissioner "+councilor_soup.select('td li a')[2].get_text().encode('utf-8').title().replace(' Map', '')
+                    newDict['electoral.district']= "Dallas County Council " + councilor_soup.select('td li a')[2].get_text().encode('utf-8').title().replace(' Map', '')
+                    newDict['phone']='214-653-7361'
+                elif 'district2' in site:
+                    newDict['official.name'] = councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[0]
+                    newDict['office.name']= "County Commissioner "+councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[1]
+                    newDict['electoral.district']= "Dallas County Council "+councilor_soup.find_all('div', {'id': 'masthead'})[0].get_text().encode('utf-8').replace('Commissioner ', '').split('\r\n')[1]
+                elif 'district3' in site:
+                    newDict['official.name'] =councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[0].replace('Commissioner', '').strip()
+                    newDict['office.name']="County Commissioner "+councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[1].strip()
+                    newDict['electoral.district']= "Dallas County Council "+councilor_soup.find_all('span', {'id': 'pagetitle'})[0].get_text().encode('utf-8').split('\xe2\x80\x93')[1].strip()
+                dictList.append(newDict)
     return dictList
 
 

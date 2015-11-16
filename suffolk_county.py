@@ -69,7 +69,7 @@ def govtdata():
             clerkDict = {}
             soup = bs4.BeautifulSoup((requests.get(url)).text)
             if url == 'http://suffolkcountyny.gov/comptroller/Home.aspx':
-                comptrollerDict['official.name'] = [img.attrs.get('alt') for img in soup.select('img[alt]')][1] 
+                comptrollerDict['official.name'] = soup.select('div.caption p')[0].get_text().encode('utf-8')
                 comptrollerDict['office.name'] = "Comptroller"
                 comptrollerDict['website'] = url
                 comptrollerDict['electoral.district'] = "Suffolk County"
@@ -90,7 +90,7 @@ def govtdata():
                 sheriffDict['state'] = "NY"
                 dictList.append(sheriffDict)
             elif url == 'http://suffolkcountyny.gov/Departments/countyclerk.aspx':
-            	clerkDict['official.name'] = soup.select('span.Head')[0].get_text().encode('utf-8').strip()
+            	clerkDict['official.name'] = soup.select('h5 span em')[0].get_text().encode('utf-8')
                 clerkDict['office.name'] = 'County Clerk'
                 clerkDict['website'] = url
                 clerkDict['electoral.district'] = 'Suffolk County'

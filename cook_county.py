@@ -30,6 +30,7 @@ def get_page_urls():
 def get_councilor_data(page_url):
     if checkURL(page_url) == 404:
         print '404 error. Check the url for {0}'.format(page_url)
+        return
     else:
         councilor_data = {}
         response = requests.get(page_url)
