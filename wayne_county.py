@@ -27,8 +27,8 @@ def get_govt_page_urls():
 		print '404 error. Check the url for {0}'.format(govt_index_url)
 	else:
 		soup = bs4.BeautifulSoup((requests.get(govt_index_url)).text)
-		for url in [a.attrs.get('href') for a in soup.select('div.deptText a[href]')]:
-			govt_page_urls.append(url.strip())
+		for url in [a.attrs.get('href') for a in soup.select('div.alert-info.alert-white a[href]')]:
+			govt_page_urls.append(url.replace('.htm', '/index.htm'))
 		govt_page_urls.pop(govt_page_urls.index('/commission/index.htm'))
 	return govt_page_urls
 
@@ -39,7 +39,7 @@ def get_govt_data(govt_page_url):
 	else:
 		soup = bs4.BeautifulSoup((requests.get(govt_root_url + govt_page_url)).text)
 		councilor_data = {}
-		councilor_data['official.name'] = soup.select('div.infoName')[0].get_text().encode('utf-8').replace('\r\n', '').replace('            ', '').replace('\xc2\xa0', '').strip()
+		councilor_data['official.name'] = soup.select('h1')[0].get_text().encode('utf-8')
 		councilor_data['electoral.district'] = 'Wayne County'
 		councilor_data['website'] = govt_root_url + govt_page_url
 		councilor_data['address'] = ''

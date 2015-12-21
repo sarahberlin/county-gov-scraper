@@ -93,7 +93,7 @@ def govtdata():
                     taxDict['electoral.district'] = "Dallas County"
                     dictList.append(taxDict)
                 elif site == '/department/treasurer/treasurer_index.php':
-                    treasurerDict['official.name']= soup.select('a b')[0].get_text().encode('utf-8').replace('\xc2\xa0', '')
+                    treasurerDict['official.name']= soup.select('p strong a')[0].get_text().encode('utf-8')
                     treasurerDict['office.name']= "Treasurer"
                     treasurerDict['website']= root_url + site
                     treasurerDict['electoral.district']= "Dallas County"

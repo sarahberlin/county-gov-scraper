@@ -8,7 +8,7 @@ import urllib, urllib2
 masterList = []
 
 root_url = 'http://www.clarkcountynv.gov'
-index_url = root_url + '/electedofficials/Pages/Default2.aspx'
+index_url = root_url + '/elected-officials/Pages/Default.aspx'
 
 #checks that a given url works and doesn't return a 404 error
 def checkURL(x):
@@ -24,16 +24,16 @@ def get_page_urls():
         print '404 error. Check the url for {0}'.format(index_url)
     else:
         soup = bs4.BeautifulSoup((requests.get(index_url)).text)
-        return [a.attrs.get('href') for a in soup.select('td p a[href^=/depts/countycom]')]
+        return [a.attrs.get('href') for a in soup.select('td p a[href^=/county-commissioner]')]
 
 
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
-    if checkURL(root_url + page_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url + page_url)
+    if checkURL(root_url + page_url + '/Pages/default.aspx') == 404:
+        print '404 error. Check the url for {0}'.format(root_url + page_url + '/Pages/default.aspx')
     else:
 	    councilor_data = {}
-	    soup = bs4.BeautifulSoup((requests.get(root_url + page_url)).text)
+	    soup = bs4.BeautifulSoup((requests.get(root_url + page_url + '/Pages/default.aspx')).text)
 	    try:
 	    	councilor_data['office.name'] = "County Comissioner "+soup.select('div.CC_Banner_Short_Banner')[0].get_text().encode('utf-8').split(':')[0]
 	    	councilor_data['official.name'] = soup.select('div.CC_Banner_Short_Banner')[0].get_text().encode('utf-8').split(':')[1].strip()
