@@ -1,14 +1,13 @@
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
 
-import requests
-import bs4
+
 import csv
 from csv import DictWriter
 import urllib, urllib2
 
-masterList = []
-
-root_url = 'http://www.clarkcountynv.gov'
-index_url = root_url + '/elected-officials/Pages/Default.aspx'
+from selenium import webdriver
+import lxml.html as lh
 
 #checks that a given url works and doesn't return a 404 error
 def checkURL(x):
@@ -18,112 +17,139 @@ def checkURL(x):
         code = 404
     return code
 
+#empty list that all the dictionaries will be appended to
+dictList = []
+
+#main page url
+root_url = 'http://www.clarkcountynv.gov'
+
+################ scraping county commissioners #########
+index_url = root_url + '/elected-officials/Pages/Default.aspx'
+comm_page_list = []
+
 #get page urls of all the councilors
 def get_page_urls():
-    if checkURL(index_url) == 404:
-        print '404 error. Check the url for {0}'.format(index_url)
-    else:
-        soup = bs4.BeautifulSoup((requests.get(index_url)).text)
-        return [a.attrs.get('href') for a in soup.select('td p a[href^=/county-commissioner]')]
+	if checkURL(index_url) == 404:
+		print '404 error. Check the url for {0}'.format(index_url)
+	else:
+		driver = webdriver.PhantomJS()
+		driver.get(index_url)
+		content = driver.page_source
+		driver.quit()
+		doc = lh.fromstring(content)
+		for page in doc.xpath('//div/p/a/@href'):
+			if len(page) == 31:
+				comm_page_list.append(str(page))
+		return comm_page_list
 
 
-#get data from each individual councilor's page
 def get_councilor_data(page_url):
-    if checkURL(root_url + page_url + '/Pages/default.aspx') == 404:
-        print '404 error. Check the url for {0}'.format(root_url + page_url + '/Pages/default.aspx')
-    else:
-	    councilor_data = {}
-	    soup = bs4.BeautifulSoup((requests.get(root_url + page_url + '/Pages/default.aspx')).text)
-	    try:
-	    	councilor_data['office.name'] = "County Comissioner "+soup.select('div.CC_Banner_Short_Banner')[0].get_text().encode('utf-8').split(':')[0]
-	    	councilor_data['official.name'] = soup.select('div.CC_Banner_Short_Banner')[0].get_text().encode('utf-8').split(':')[1].strip()
-	    	councilor_data['electoral.district'] = "Clark County Council " + soup.select('div.CC_Banner_Short_Banner')[0].get_text().encode('utf-8').split(':')[0][-1]
-	    	councilor_data['website'] = root_url+page_url
-	    	councilor_data['address']= '500 S. Grand Central Parkway Las Vegas, Nevada 89155'
-	    	contact_page = (root_url+page_url).replace('/Pages/default.aspx','')+ '/Pages/ContactUs.aspx'
-	    	contact_soup = bs4.BeautifulSoup((requests.get(contact_page)).text)
-	    	councilor_data['email'] = [a.attrs.get('href') for a in contact_soup.select('div a[href^=mailto:]')][0].replace('mailto:', '')
-	    	councilor_data['phone']= contact_soup.select('div.contactDetails')[0].get_text().encode('utf-8').split('Phone:')[1].replace('\r\n\t', '').replace('\t', '')
-	    except:
-	    	pass
-    return councilor_data
+	if checkURL(root_url + page_url + '/Pages/default.aspx') == 404:
+		print '404 error. Check the url for {0}'.format(root_url + page_url + '/Pages/default.aspx')
+	else:
+		driver = webdriver.PhantomJS()
+		driver.get(root_url + page_url + '/Pages/default.aspx')
+		content = driver.page_source
+		driver.quit()
+		doc = lh.fromstring(content)
+		for x in doc.xpath('//h2//text()[1]'):
+			councilor_data = {}
+			district = x.split('-')[0].strip()
+			name = x.split('-')[1].strip()
+			councilor_data['office.name'] = 'County Commissioner ' + district
+			councilor_data['electoral.district'] = 'Clark County Council ' + district
+			councilor_data['official.name'] = name
+			councilor_data['website'] = root_url+page_url
+			councilor_data['address']= '500 S. Grand Central Parkway Las Vegas, Nevada 89155'
+			councilor_data['email'] = 'ccdist' + district[-1] + '@ClarkCountyNV.gov'
+			councilor_data['phone']= '(702) 455-3500'
+			councilor_data['state'] = 'NV'
+			return councilor_data
 
-#runs scripts together
-page_urls = get_page_urls()
+
+#run the functions together
+get_page_urls()
+page_urls = comm_page_list
 for page_url in page_urls:
-    masterList.append(get_councilor_data(page_url)) 
+    dictList.append(get_councilor_data(page_url))
 
 
-#checks for error in pulls down table of elected officials
-clark_officials = 'http://www.clarkcountynv.gov/ElectedOfficials/Pages/ClarkCountyOfficials.aspx'
-def get_table():
-	if checkURL(clark_officials) == 404:
-		print '404 error. Check the url for {0}'.format(clark_officials)
+################ scraping other elected officials #########
+
+other_page_list = []
+other_index_url = root_url + '/elected-officials/Pages/ClarkCountyOfficials.aspx'
+
+
+def get_other_urls():
+	if checkURL(other_index_url) == 404:
+		print '404 error. Check the url for {0}'.format(other_index_url)
 	else:
-		req = urllib2.Request(clark_officials)
-		page = urllib2.urlopen(req)
-		soup = bs4.BeautifulSoup(page)
-		table = soup.find("table", { "style" : "height:329px;width:653px;background-color:#c6d9f0" })
-		return table
+		driver = webdriver.PhantomJS()
+		driver.get(other_index_url)
+		content = driver.page_source
+		driver.quit()
+		doc = lh.fromstring(content)
+		for page in doc.xpath('//tr/td/p/span/a/@href'):
+			if '/Pages/Default.aspx' not in page:
+				other_page_list.append(str(page))
+		return other_page_list
 
-#scrapes table of elected officials, adding each dictionary, some of which do not have data, to templist. note: cells refers to the columns, their indices are 0, 1, 2
-tempList = []
-def scrape_officials_table():
-	if checkURL(clark_officials) == 404:
-		print '404 error. Check the url for {0}'.format(clark_officials)
+
+def get_other_data(other_page_url):
+	if checkURL(root_url + other_page_url) == 404:
+		print '404 error. Check the url for {0}'.format(root_url + other_page_url)
 	else:
-		for i,row in enumerate(get_table().findAll("tr")):
-			cells = row.findAll("td")
-			if len(cells) > 2:
-				class System():
-					def __init__(self):
-						self.tempList = []
-				columnlist = []
-				column1 = cells[0]
-				column2 = cells[1]
-				column3 = cells[2]
-				columnlist.extend([column1, column2, column3])
-				for column in columnlist:
-					for p in column:
-						try:
-							pdict = {}
-							pdict['text'] = p.get_text().encode('utf-8').replace('\xa0', ' ').replace('\xc2', '').strip()
-							pdict['link'] = [a.attrs.get('href') for a in column.select('p a[href]')]
-							if len(pdict['text']) > 0 or len(pdict['link']) > 0:
-								tempList.append(pdict)
-						except:
-							pass
-		return tempList
-
-scrape_officials_table()
-
-#loops through the dictionaries in templist and reformats data before appending to masterList
-def make_officials_dicts():
-	if checkURL(clark_officials) == 404:
-		print '404 error. Check the url for {0}'.format(clark_officials)
-	else:
-		for x in range(0,9):
-			if 9 > x > 5 or x < 3:
-				officialDict = {}
-				officialDict['office.name'] = tempList[x]['text']
-				officialDict['official.name'] = tempList[x+3]['text']
-				officialDict['website'] = root_url + str(tempList[x+3]['link']).replace('[', '').replace(']','').replace("'", "")
-				officialDict['electoral.district'] = "Clark County"
-				masterList.append(officialDict)
-		return masterList
-
-make_officials_dicts()
+		driver = webdriver.PhantomJS()
+		driver.get(root_url + other_page_url)
+		content = driver.page_source
+		driver.quit()
+		doc = lh.fromstring(content)
+		if other_page_url == '/elected-officials/Pages/PublicAdministrator.aspx':
+			for x in doc.xpath('//span[@class="ms-rteFontSize-3"][1]//text()[1]'):
+				councilor_data = {}
+				office = x.encode('utf-8').split('  ')[0]
+				name = x.encode('utf-8').split('  ')[1]
+				councilor_data['office.name'] = office
+		elif other_page_url == '/elected-officials/Pages/CountyAssessor.aspx':
+			for x in doc.xpath('//span[@class="ms-rteThemeForeColor-5-4 ms-rteFontSize-3"][1]//text()'):
+				councilor_data = {}
+				office = x.encode('utf-8').split('\xa0 ')[0].replace('\xc2','')
+				name = x.encode('utf-8').split('\xa0 ')[1].replace('\xc2\xa0','')
+				councilor_data['office.name'] = office
+				councilor_data['official.name'] = name
+		elif other_page_url == '/elected-officials/Pages/CountyTreasurer.aspx':
+			for x in doc.xpath('//span[@class="ms-rteFontSize-3"][1]//text()'):
+				councilor_data = {}
+				office = x.encode('utf-8').split('\xc2\xa0 ')[0] + ' ' + x.encode('utf-8').split('\xc2\xa0 ')[1]
+				name = x.encode('utf-8').split('\xc2\xa0 ')[2].replace('\xc2\xa0','')
+				councilor_data['office.name'] = office
+				councilor_data['official.name'] = name
+		else:
+			for x in doc.xpath('//span[@class="ms-rteFontSize-3"][1]//text()'):
+				councilor_data = {}
+				office = x.encode('utf-8').split('\xc2\xa0 ')[0]
+				name = x.encode('utf-8').split('\xc2\xa0 ')[1].replace('\xc2\xa0','') 
+				councilor_data['office.name'] = office
+		councilor_data['electoral.district'] = 'Clark County'
+		councilor_data['official.name'] = name
+		councilor_data['website'] = root_url+other_page_url
+		councilor_data['state'] = 'NV'
+		return councilor_data
 
 
-for dictionary in masterList:
-    dictionary['state'] = 'NV'
+#run the functions together
+get_other_urls()
+other_page_urls = other_page_list
+for other_page_url in other_page_urls:
+	dictList.append(get_other_data(other_page_url))
+
 
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter']
 clark_county_board_file = open('clark_county_board.csv','wb')
 csvwriter = csv.DictWriter(clark_county_board_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))
-for row in masterList:
+for row in dictList:
     csvwriter.writerow(row)
 
 clark_county_board_file.close()
@@ -132,4 +158,3 @@ with open("clark_county_board.csv", "r") as clark_county_board_csv:
      clark_county_board = clark_county_board_csv.read()
 
 #print clark_county_board
-
