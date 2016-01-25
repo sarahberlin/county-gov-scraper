@@ -25,11 +25,11 @@ def get_council_data():
 		soup = bs4.BeautifulSoup((requests.get(root_url)).text)
 		for x in range(0,9):
 			newDict = {}
-			newDict['official.name'] = soup.select('ul.list-inline li')[x].get_text().encode('utf-8').split(' \xc2\xb7 ')[0]
-			newDict['office.name'] = "County Councilmember " + soup.select('ul.list-inline li')[x].get_text().encode('utf-8').split(' \xc2\xb7 ')[1]
-			newDict['electoral.district'] = 'King County Council ' + soup.select('ul.list-inline li')[x].get_text().encode('utf-8').split(' \xc2\xb7 ')[1]
-			newDict['website'] = 'http://www.kingcounty.gov'+[a.attrs.get('href') for a in soup.select('ul.list-inline li a[href^=/]')][x]
-			newDict['phone'] = '206-477-100' + soup.select('ul.list-inline li')[x].get_text().encode('utf-8').split(' \xc2\xb7 ')[1][-1]
+			newDict['official.name'] = soup.select('div.col-xs-6  ul.list-unstyled li a')[x].get_text().encode('utf-8').split(' \xc2\xb7 ')[0]
+			newDict['office.name'] = "County Councilmember " + soup.select('span.hidden-xs')[x+1].get_text().encode('utf-8').strip()
+			newDict['electoral.district'] = 'King County Council ' + soup.select('span.hidden-xs')[x+1].get_text().encode('utf-8').strip()
+			newDict['website'] = 'http://www.kingcounty.gov'+[a.attrs.get('href') for a in soup.select('ul.list-unstyled li a[href^=/council/]')][x]
+			newDict['phone'] = '206-477-100' + soup.select('span.hidden-xs')[x+1].get_text().encode('utf-8').strip()[-1]
 			newDict['address'] = '516 Third Ave., Rm. 1200 Seattle, WA 98104'
 			email_page = 'http://www.kingcounty.gov/council/councilmembers.aspx'
 			if checkURL(email_page) == 404:
@@ -39,6 +39,12 @@ def get_council_data():
 				email_soup = bs4.BeautifulSoup((requests.get(email_page)).text)
 				newDict['email'] = [a.attrs.get('href') for a in email_soup.select('a[href^=mailto:]')][x].replace('mailto:','')
 				dictList.append(newDict)
+		newDict = {}
+		newDict['official.name'] = soup.select('p a ')[0].get_text().encode('utf-8').replace('King County Executive ', '')
+		newDict['office.name'] = soup.select('p a span.hidden-xs')[0].get_text().encode('utf-8')
+		newDict['electoral.district'] = "King County"
+		newDict['website'] = [a.attrs.get('href') for a in soup.select('p a[href^=/elected/executive]')]
+
 	return dictList
 
 get_council_data()

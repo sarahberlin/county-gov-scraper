@@ -42,7 +42,7 @@ def make_dicts():
     else:
         soup = bs4.BeautifulSoup((requests.get(index_url)).text)
         names = [img.get('alt') for img in soup.findAll('img')][1:-2]
-        for x in range(0,18):
+        for x in range(0, len(names)):
             govtdata = {}
             govtdata['official.name']= names[x]
             govtdata['office.name']= "County Legislator District {0}".format(x+1)

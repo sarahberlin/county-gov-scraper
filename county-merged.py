@@ -10,7 +10,7 @@ import datetime
 #establishes today's date, which will be included in the file name
 today = datetime.date.today()
 
-path = '/Users/sarahberlin/Dropbox/GovProj\ Scraping/County'
+path = '/Users/sarahberlin/Dropbox/GovProj Scraping/County_scripts'
 os.listdir(path)
 
 #run all of the python files in this directory so that the csv's are up to date

@@ -26,7 +26,7 @@ def get_page_urls():
     else:
         response = requests.get(index_url)
         soup = bs4.BeautifulSoup(response.text)
-        return [a.attrs.get('href') for a in soup.select('div.secondlevel-right a[href^=https://www.lacounty.gov/government/supervisors/]')]
+        return [a.attrs.get('href') for a in soup.select('div.secondlevel-right div.slr-item a[href^=https://www.lacounty.gov/government/supervisors/]')]
 
 #get data from each individual councilor's page
 def get_councilor_data(page_url):

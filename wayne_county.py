@@ -39,7 +39,7 @@ def get_govt_data(govt_page_url):
 	else:
 		soup = bs4.BeautifulSoup((requests.get(govt_root_url + govt_page_url)).text)
 		councilor_data = {}
-		councilor_data['official.name'] = soup.select('h1')[0].get_text().encode('utf-8')
+		councilor_data['official.name'] = soup.select('div.infoName')[0].get_text().encode('utf-8').replace('\r\n', '').replace('\xc2\xa0','').strip()
 		councilor_data['electoral.district'] = 'Wayne County'
 		councilor_data['website'] = govt_root_url + govt_page_url
 		councilor_data['address'] = ''
@@ -66,7 +66,7 @@ def get_councilor_urls():
 		print '404 error. Check the url for {0}'.format(councilor_index_url)
 	else:
 		soup = bs4.BeautifulSoup((requests.get(councilor_index_url)).text)
-	return [a.attrs.get('href') for a in soup.select('div.deptList a[href^=/commission/district]')]
+	return [a.attrs.get('href') for a in soup.select('li a[href^=/commission/district]')]
 
 #scrapes each commissioner's page
 def get_councilor_data(councilor_url):     
@@ -76,8 +76,12 @@ def get_councilor_data(councilor_url):
 		soup = bs4.BeautifulSoup((requests.get(councilor_root_url + councilor_url)).text)
 		councilor_data = {}
 		councilor_data['official.name'] = soup.select('div.infoName')[0].get_text().encode('utf-8').replace('\r\n', '').replace('            ', '').replace('\xc2\xa0', '').strip()
-		councilor_data['electoral.district'] = 'Wayne County Council ' + soup.select('div.infoName')[1].get_text().encode('utf-8').split(' Commissioner')[0]
-		councilor_data['office.name'] = "Commissioner "+ soup.select('div.infoName')[1].get_text().encode('utf-8').split(' Commissioner')[0]
+		if "Chair" in soup.select('div.infoName')[1].get_text().encode('utf-8'):
+			councilor_data['electoral.district'] = 'Wayne County Council ' + soup.select('div.contentLeft h1')[0].get_text().encode('utf-8').split('\xc2\x93')[1].strip()
+			councilor_data['office.name'] = "Commissioner " + soup.select('div.contentLeft h1')[0].get_text().encode('utf-8').split('\xc2\x93')[1].strip()
+		else:
+			councilor_data['electoral.district'] = 'Wayne County Council ' + soup.select('div.infoName')[1].get_text().encode('utf-8').split(' Commissioner')[0]
+			councilor_data['office.name'] = "Commissioner "+ soup.select('div.infoName')[1].get_text().encode('utf-8').split(' Commissioner')[0]
 		councilor_data['website'] = councilor_root_url + councilor_url
 		councilor_data['address'] = '500 Griswold St. 7th Floor, Detroit, MI 48226'
 		councilor_data['email'] = [a.attrs.get('href') for a in soup.select('div.infoEmail a[href]')][0].replace('mailto:', '').replace('?name=', '')

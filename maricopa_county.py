@@ -42,6 +42,7 @@ def scrape_supervisor_websites():
 		contactsoup = bs4.BeautifulSoup((requests.get(contactpage)).text)
 		newDict['email'] = [a.attrs.get('href') for a in contactsoup.select('a[href^mailto]')][0].replace('mailto:', '')
 		newDict['phone'] = contactsoup.select('div.sixcol')[0].get_text().split('\n')[5].encode('utf-8').strip()
+		newDict['website'] = site
 		dictList.append(newDict)
 	return dictList
 
