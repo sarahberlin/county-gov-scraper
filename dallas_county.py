@@ -80,7 +80,7 @@ def govtdata():
                     districtclerkDict['electoral.district'] = "Dallas County"
                     dictList.append(districtclerkDict)
                 elif site == '/department/sheriff/sheriff_intro.php':
-                    soup = bs4.BeautifulSoup((requests.get((root_url+site).replace('/sheriff_intro.php',''))).text)
+                    soup = bs4.BeautifulSoup((requests.get((root_url+site).replace('/sheriff_intro.php','/sheriff_valdez.php'))).text)
                     sheriffDict['official.name'] = soup.select('p.subhead')[0].get_text().encode('utf-8').replace('Sheriff ', '')
                     sheriffDict['office.name'] = "Sheriff"
                     sheriffDict['website'] = root_url + site

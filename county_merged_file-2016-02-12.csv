@@ -63,6 +63,7 @@ IL,Cook County Council 15th District,County Commissioner 15th District,Timothy O
 IL,Cook County Council 16th District,County Commissioner 16th District,Jeffrey R. Tobolski,"118 N. Clark Street, Room 567 Chicago, IL 60602",(312) 603-6384,http://www.cookcountyil.gov/jeffrey-r-tobolski-16th/,,,
 IL,Cook County Council 17th District,County Commissioner 17th District,Sean M. Morrison,"118 N. Clark Street, Room 567 Chicago, IL 60602",,http://www.cookcountyil.gov/sean-m-morrison-17th/,,,
 IL,Cook County,Assessor,Joseph Berrios,,,http://www.cookcountyil.gov/joseph-berrios/,,,
+IL,Cook County,Clerk of Court,[],,,http://www.cookcountyclerkofcourt.org/,,,
 IL,Cook County,County Clerk,David Orr,,,http://www.cookcountyclerk.com/Pages/default.aspx,,,
 IL,Cook County,Sheriff,Thomas J. Dart,,,http://www.cookcountysheriff.org,,,
 IL,Cook County,State's Attorney,Anita Alvarez,,,http://www.statesattorney.org/,,,
@@ -71,6 +72,7 @@ TX,Dallas County,County Judge,Clay Jenkins,,,http://www.dallascounty.org/departm
 TX,Dallas County,County Clerk,John F. Warren,,,http://www.dallascounty.org/department/countyclerk/countyclerk.php,,,
 TX,Dallas County,District Attorney,Susan Hawk,,,http://www.dallascounty.org/department/da/da_index.php,,,
 TX,Dallas County,District Clerk,Felicia Pitre,,,http://www.dallascounty.org/department/districtclerk/districtclerk_index.html,,,
+TX,Dallas County,Sheriff,Lupe Valdez,,,http://www.dallascounty.org/department/sheriff/sheriff_intro.php,,,
 TX,Dallas County,Tax Assessor-Collector,John R. Ames,,,http://www.dallascounty.org/department/tax/taxoffice_home.html,,,
 TX,Dallas County,Treasurer,Pauline Medrano,,,http://www.dallascounty.org/department/treasurer/treasurer_index.php,,,
 TX,Dallas County Council Cities In Dallas County,County Commissioner Cities In Dallas County,About Us,"411 Elm St., 2nd Floor Dallas, Texas 75202",214-653-7361,http://www.dallascounty.org/department/comcrt/daniel.php,,,
@@ -101,17 +103,17 @@ WA,King County Council District 9,County Councilmember District 9,Reagan Dunn,"5
 WA,King County,Assessor,John Wilson,,,http://www.kingcounty.gov/Assessor.aspx,,,
 WA,King County,Elections Director,Julie Wise,,,http://www.kingcounty.gov/depts/elections.aspx,,,
 WA,King County,Prosecutor,Dan Satterberg,,,http://www.kingcounty.gov/Prosecutor.aspx,,,
-WA,King County,Sheriff,John Urquhart,,,http://www.kingcounty.gov/Prosecutor/news.aspx,,,
+WA,King County,Sheriff,John Urquhart,,,http://www.kingcounty.gov/Prosecutor/bio.aspx,,,
 CA,Los Angeles County Council District 1,County Supervisor District 1,Hilda L. Solis,"500 W. Temple St. Room 358, Los Angeles 90012",(213) 974-4111,http://solis.lacounty.gov,firstdistrict@bos.lacounty.gov,http://facebook.com/HildaSolis,https://twitter.com/HildaSolis
 CA,Los Angeles County Council District 2,County Supervisor District 2,Mark Ridley-Thomas,"500 W. Temple St. Room 358, Los Angeles 90012",(213) 974-2222,http://ridley-thomas.lacounty.gov,markridley-thomas@bos.lacounty.gov,http://facebook.com/markridleythomas,https://twitter.com/mridleythomas
 CA,Los Angeles County Council District 3,County Supervisor District 3,Sheila Kuehl,"500 W. Temple St. Room 358, Los Angeles 90012",(213) 974-3333,http://supervisorkuehl.com/,sheila@bos.lacounty.gov,https://www.facebook.com/sjkuehl,https://twitter.com/https://twitter.com/sheilakuehl
 CA,Los Angeles County Council District 4,County Supervisor District 4,Don Knabe,"500 W. Temple St. Room 358, Los Angeles 90012",(213) 974-4444,http://knabe.com,don@bos.lacounty.gov,http://facebook.com/SupervisorKnabe,https://twitter.com/DonKnabe
 CA,Los Angeles County Council District 5,County Supervisor District 5,Michael D. Antonovich,"500 W. Temple St. Room 358, Los Angeles 90012",(213) 974-5555,http://antonovich.com,fifthdistrict@lacbos.org,http://facebook.com/michael.antonovich,https://twitter.com/MikeAntonovich
-AZ,Maricopa County Council District 1,County Supervisor District 1,Denny Barney,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-1776,,barneyd@mail.maricopa.gov,,
-AZ,Maricopa County Council District 2,County Supervisor District 2,Steve Chucri,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7431,,chucris@mail.maricopa.gov,,
-AZ,Maricopa County Council District 3,County Supervisor District 3,Andy Kunasek,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7562,,akunasek@mail.maricopa.gov,,
-AZ,Maricopa County Council District 4,County Supervisor District 4,Clint L. Hickman,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7642,,chickman@mail.maricopa.gov,,
-AZ,Maricopa County Council District 5,County Supervisor District 5,Steve Gallardo,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7092,,arzagawilliamsc@mail.maricopa.gov,,
+AZ,Maricopa County Council District 1,County Supervisor District 1,Denny Barney,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-1776,https://www.maricopa.gov/dist1/default.aspx,barneyd@mail.maricopa.gov,,
+AZ,Maricopa County Council District 2,County Supervisor District 2,Steve Chucri,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7431,https://www.maricopa.gov/dist2/,chucris@mail.maricopa.gov,,
+AZ,Maricopa County Council District 3,County Supervisor District 3,Andy Kunasek,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7562,https://www.maricopa.gov/dist3/,akunasek@mail.maricopa.gov,,
+AZ,Maricopa County Council District 4,County Supervisor District 4,Clint L. Hickman,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7642,https://www.maricopa.gov/dist4/,chickman@mail.maricopa.gov,,
+AZ,Maricopa County Council District 5,County Supervisor District 5,Steve Gallardo,"301 W. Jefferson, 10th Floor Phoenix, Arizona 85003",(602) 506-7092,https://www.maricopa.gov/dist5/default.aspx,arzagawilliamsc@mail.maricopa.gov,,
 AZ,Maricopa County,Assessor,Paul Petersen,,,http://mcassessor.maricopa.gov/the-assessor/biography/,,,
 AZ,Maricopa County,Clerk of the Board,Fran McCarroll,,,https://www.maricopa.gov/clk_board/default.aspx,,,
 AZ,Maricopa County,Clerk of the Court,Michael Jeanes,,,http://clerkofcourt.maricopa.gov/clkbio.asp,,,
@@ -248,7 +250,7 @@ MI,Wayne County Council District 8,Commissioner District 8,Diane Webb,"500 Grisw
 MI,Wayne County Council District 9,Commissioner District 9,Terry Marecki,"500 Griswold St. 7th Floor, Detroit, MI 48226",(313) 224-0946,http://www.waynecounty.com/commission/district9.htm,tmarecki@waynecounty.comTerry Marecki,,
 MI,Wayne County Council District 10,Commissioner District 10,Joe Barone,"500 Griswold St. 7th Floor, Detroit, MI 48226",313-224-0882,http://www.waynecounty.com/commission/district10.htm,jbarone@waynecounty.comJoe Barone,,
 MI,Wayne County Council District 11,Commissioner District 11,Al Haidous,"500 Griswold St. 7th Floor, Detroit, MI 48226",(313) 224-0944,http://www.waynecounty.com/commission/district11.htm,"ahaidous@waynecounty.comAbdul ""Al"" Haidous",,
-MI,Wayne County Council District 12,Commissioner District 12,Glenn Anderson,"500 Griswold St. 7th Floor, Detroit, MI 48226",(313) 224-8855,http://www.waynecounty.com/commission/district12.htm,district12@waynecounty.com,,
+MI,Wayne County Council District 12,Commissioner District 12,Glenn S. Anderson,"500 Griswold St. 7th Floor, Detroit, MI 48226",(313) 224-8855,http://www.waynecounty.com/commission/district12.htm,district12@waynecounty.com,,
 MI,Wayne County Council District 13,Commissioner District 13,Gary Woronchak,"500 Griswold St. 7th Floor, Detroit, MI 48226",,http://www.waynecounty.com/commission/district13.htm,gworonch@waynecounty.comWayne County Commissioner,,
 MI,Wayne County Council District 14,Commissioner District 14,Raymond Basham,"500 Griswold St. 7th Floor, Detroit, MI 48226",(313) 224-0876,http://www.waynecounty.com/commission/district14.htm,rbasham@waynecounty.com,,
 MI,Wayne County Council District 15,Commissioner District 15,Joseph Palamara,"500 Griswold St. 7th Floor, Detroit, MI 48226",(313) 224-0880,http://www.waynecounty.com/commission/district15.htm,jpalamar@waynecounty.com,,

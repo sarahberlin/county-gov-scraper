@@ -82,7 +82,7 @@ def govtdata():
                 SADict['electoral.district'] = "Cook County"
                 dictList.append(SADict)
             elif url == 'http://www.cookcountyclerkofcourt.org/':
-                clerkbio = [a.attrs.get('href') for a in soup.select('li a[href^=/About-Us/Biography]')][0]
+                clerkbio = '?section=DBROWNPage&displaytab=BIOGRAPHY#menutabs'
                 clerkbiosoup = bs4.BeautifulSoup((requests.get(url + clerkbio)).text)
                 clerkofCourtDict['official.name'] = [img.attrs.get('alt') for img in clerkbiosoup.select('div.editregion p img[alt]')]
                 clerkofCourtDict['office.name'] = "Clerk of Court"
